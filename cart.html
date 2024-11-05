@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        .container{
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        column-gap: 30px;
+        row-gap: 30px;
+        margin-left: 6%;
+        margin-right: 1.5%;
+      } 
+
+      .card{
+        width: 90%;
+        height: 60em;
+        padding: 4%;
+        text-align: left;
+        line-height: 1.5;
+        box-shadow: 0 4px 8px rgba(0.1, 0.1, 0.1, 0.5);
+        border-radius: 8px; 
+        font-size: 18px;
+      }
+
+      .img{
+        height: 30%;
+        width: 65%;
+        margin-left: 18%;  
+      }
+
+      .btn {
+        background-color: #ffae00; 
+        border: none;
+        color: white; 
+        padding: 15px 20px; 
+        font-size: 18px; 
+        margin-top: 10%;
+        margin-left: 31.5%;
+        border-radius: 5px; 
+      }
+
+      .btn:hover {
+        background-color: #c98900; 
+        transform: scale(1.05); 
+      }
+
+      #homebtn{
+        background-color: #ffae00; 
+        border: none;
+        color: white; 
+        padding: 15px 20px; 
+        font-size: 18px; 
+        margin-top: 1.5%;
+        margin-bottom: 3%;
+        margin-left: 5%;
+        border-radius: 5px; 
+      }
+
+      #homebtn:hover {
+        background-color: #c98900; 
+        transform: scale(1.05); 
+      }
+
+    </style>
+</head>
+<body>
+
+    <button id="homebtn" onclick="fun()">Home Page</button> <br><br>
+    <div> </div>
+    
+    <script>
+
+        let homebtn = document.querySelector("#homebtn");
+
+        function fun(){
+            window.location.href = "index.html";
+            // window.history.back( );
+        }
+
+        let newshoppingData = JSON.parse(localStorage.getItem("shoppingData"));
+
+        let mainDiv = document.querySelector("div");
+        mainDiv.classList.add("container");
+
+        if (newshoppingData.length > 0) {
+            newshoppingData.map((val) => {
+                let cardDiv = document.createElement("div");
+                cardDiv.classList.add("card");
+
+                let img = document.createElement("img");
+                img.src = val.image;
+                img.classList.add("img");
+
+                let childb = document.createElement("div");
+                childb.innerHTML = "<b>Category: </b>" + val.category;
+
+                let childc = document.createElement("div");
+                childc.innerHTML = "<b>Title: </b>" + val.title;
+
+                let childd = document.createElement("div");
+                childd.innerHTML = "<b>Description: </b>" + val.description;
+
+                let childe = document.createElement("div");
+                childe.innerHTML = "<b>Price: </b>" + val.price;
+
+                let childf = document.createElement("div");
+                childf.innerHTML = "<b>Rating: </b>" + val.rating.rate;
+
+                let btn = document.createElement("button");
+                btn.innerHTML = "DELETE";
+                btn.classList.add("btn");
+
+                btn.addEventListener("click", () => {
+                    const index = newshoppingData.indexOf(val);
+                    if (index > -1) {
+                        newshoppingData.splice(index, 1); // removes the particular index in the array
+                        localStorage.setItem("shoppingData", JSON.stringify(newshoppingData)); // updated is again stored in ls
+                    }
+                    mainDiv.removeChild(cardDiv);
+                });
+
+                cardDiv.append(img, childb, childc, childd, childe, childf,btn);
+                mainDiv.append(cardDiv);
+            });
+
+        } else {
+            mainDiv.innerHTML = "<h1>Your cart is Empty.</h1>";
+        }
+
+
+
+        
+
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
